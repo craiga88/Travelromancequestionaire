@@ -1,0 +1,92 @@
+// A simple web app mockup for "Check-In Compass"
+// Built with HTML + JavaScript for personal use. No backend, all client-side
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check-In Compass</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f4f8; }
+    h1 { color: #333; }
+    .question { margin: 20px 0; }
+    button { padding: 10px 20px; font-size: 16px; }
+    #result { margin-top: 30px; font-size: 24px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Check-In Compass</h1>
+  <div class="question">
+    <label>1. How excited are you (1–10)?</label><br>
+    <input type="number" id="q1" min="1" max="10">
+  </div>
+  <div class="question">
+    <label>2. Have your feelings changed recently?</label><br>
+    <select id="q2">
+      <option value="no">No</option>
+      <option value="a_bit">A bit</option>
+      <option value="a_lot">Yes, a lot</option>
+    </select>
+  </div>
+  <div class="question">
+    <label>3. Do you have unresolved concerns?</label><br>
+    <select id="q3">
+      <option value="no">No</option>
+      <option value="some">Some</option>
+      <option value="yes">Yes</option>
+    </select>
+  </div>
+  <div class="question">
+    <label>4. How would you feel if they canceled?</label><br>
+    <select id="q4">
+      <option value="relieved">Relieved</option>
+      <option value="neutral">Neutral</option>
+      <option value="sad">Disappointed or sad</option>
+    </select>
+  </div>
+  <div class="question">
+    <label>5. Would you prefer a different format (less time/space)?</label><br>
+    <select id="q5">
+      <option value="no">No</option>
+      <option value="maybe">Maybe</option>
+      <option value="yes">Yes</option>
+    </select>
+  </div>
+  <button onclick="calculateResult()">See Check-In Result</button>
+  <div id="result"></div>
+
+  <script>
+    function calculateResult() {
+      const excitement = parseInt(document.getElementById('q1').value);
+      const change = document.getElementById('q2').value;
+      const concern = document.getElementById('q3').value;
+      const cancelReaction = document.getElementById('q4').value;
+      const format = document.getElementById('q5').value;
+
+      let score = 0;
+      if (excitement >= 8) score += 2;
+      else if (excitement >= 5) score += 1;
+
+      if (change === 'a_bit') score -= 1;
+      if (change === 'a_lot') score -= 2;
+
+      if (concern === 'some') score -= 1;
+      if (concern === 'yes') score -= 2;
+
+      if (cancelReaction === 'neutral') score -= 1;
+      if (cancelReaction === 'relieved') score -= 2;
+
+      if (format === 'maybe') score -= 1;
+      if (format === 'yes') score -= 2;
+
+      let resultText = '';
+      if (score >= 3) resultText = 'GREEN: You’re feeling aligned and ready!';
+      else if (score >= 0) resultText = 'YELLOW: You have some hesitation. Talk before committing.';
+      else resultText = 'RED: You’re not feeling good about this—pause and reflect.';
+
+      document.getElementById('result').textContent = resultText;
+    }
+  </script>
+</body>
+</html>
